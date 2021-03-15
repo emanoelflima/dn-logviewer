@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>com.dn.logviewer</groupId>
 	<artifactId>logviewer</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-RELEASE</version>
 	<packaging>war</packaging>
 	<name>logviewer</name>
 	<description>Demo project for Spring Boot</description>
