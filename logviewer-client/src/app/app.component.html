@@ -1,0 +1,87 @@
+<div class="frame">
+	<div class="center">
+    <div class="title app-title">
+      <p>{{ title }}</p>
+    </div>
+		<div class="title">
+      <p>
+        Choose a .log or .txt file to process its data<br />
+        Drop file to upload
+      </p>
+		</div>
+
+		<div class="dropzone">
+			<img src="http://100dayscss.com/codepen/upload.svg" class="upload-icon" />
+			<input type="file" class="upload-input" (change)="onSelectFile($event.target)" accept=".log, .txt" />
+		</div>
+
+    <div class="file-list">
+      <span *ngIf="files.length == 0">No file selected</span>
+      <span *ngFor="let file of files">{{ file.name }}</span>
+    </div>
+
+		<button type="button" class="btn" name="uploadbutton" [disabled]="files.length == 0" (click)="processFile()">Upload file</button>
+
+	</div>
+</div>
+
+<div class="frame loader" [ngClass]="{'active': loadingData}">
+  <div class="center full">
+    <p>Processing your file. Please, wait...</p>
+  </div>
+</div>
+
+<div class="frame loader success" [ngClass]="{'active': !loadingData && successLoadingData}">
+  <div class="close">
+    <button mat-button color="primary" (click)="closeSuccess()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div class="report-data">
+    <p class="report-success">Success! Here is your data:</p>
+
+    <div class="report-data-container">
+
+      <table mat-table [dataSource]="report.rendering" class="mat-elevation-z8 report-table" *ngIf="report.rendering && report.rendering.length > 0">
+
+        <ng-container matColumnDef="documentId">
+          <th mat-header-cell *matHeaderCellDef class="col-document-id"> Document id </th>
+          <td mat-cell *matCellDef="let element" class="col-document-id"> {{element.documentId}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="gets">
+          <th mat-header-cell *matHeaderCellDef class="col-gets"> Get </th>
+          <td mat-cell *matCellDef="let element" class="col-gets"> {{element.gets}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="pageNumber">
+          <th mat-header-cell *matHeaderCellDef class="col-page-number"> Page number </th>
+          <td mat-cell *matCellDef="let element" class="col-page-number"> {{element.pageNumber}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="starts">
+          <th mat-header-cell *matHeaderCellDef class="col-starts"> Start </th>
+          <td mat-cell *matCellDef="let element" class="col-starts"> {{element.starts}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="uid">
+          <th mat-header-cell *matHeaderCellDef class="col-uid"> UID </th>
+          <td mat-cell *matCellDef="let element" class="col-uid"> {{element.uid}} </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+    <div class="summary" *ngIf="report.summary">
+      <span>Count: {{ report.summary.count }} | </span>
+      <span>Duplicates: {{ report.summary.duplicates }} | </span>
+      <span>Unecessary: {{ report.summary.unecessary }}</span>
+      <button mat-button color="primary" (click)="downloadXml()">
+        <mat-icon>find_in_page</mat-icon> See original xml
+      </button>
+    </div>
+  </div>
+
+</div>
